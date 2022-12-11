@@ -1,0 +1,30 @@
+---
+- name: cron module 
+  hosts: all
+  tasks:
+    - name: "cron example"
+      ansible.builtin.cron:
+        name: "yum update every week"
+        state: present
+        minute: "48"
+        hour: "*"
+        day: "*"
+        month: "*"
+        weekday: "*"
+        job: yum -y update
+
+    - name: "cron example2"
+      cron:
+        name: /usr/bin/status on reboot
+        special_time: reboot
+        user: root
+        job: /usr/bin/status
+
+    - name: "cron example3"
+      cron:
+        name: "runs on mon wed fri 7am"
+        weekday: 1 , 3 , 5
+        minute: 0
+        hour: 7
+        user: root
+        job: /usr/bin/faillock_report

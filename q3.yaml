@@ -1,0 +1,39 @@
+---
+- name: Verify connectivity and install httpd
+  hosts: all
+  tasks:
+    - name: Ping all hosts to verify connectivity
+      ping:
+    - name: Install httpd package
+      yum:
+        name: httpd
+        state: present
+
+    - name: Start and enable httpd service
+      service:
+        name: httpd
+        state: started
+        enabled: true
+
+    - name: Creating DBA account
+      user:
+        name: DBA
+        state: present
+
+    - name: Index.Html file
+      file:
+        path: /var/www/html/index.html
+        state: touch
+
+    - name: install git
+      yum:
+        name: git 
+        state: present
+
+    - name: clone git repo
+      ansible.builtin.git:
+        repo: https://github.com/ansible/ansible-examples.git
+        dest: /etc/opt
+        clone: yes
+        update: yes
+
